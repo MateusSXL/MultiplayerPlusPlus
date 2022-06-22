@@ -2,7 +2,7 @@
 
 modVersion=0
 #gameVersion="1.2"
-modName="multiplayer-plus-plus-mod"
+modName="multiplayer-plus-plus"
 projectName="MultiplayerPlusPlusMod"
 installationPath="../../../SteamLibrary/steamapps/common/Skater XL/Mods/"
 buildMode="Debug"
