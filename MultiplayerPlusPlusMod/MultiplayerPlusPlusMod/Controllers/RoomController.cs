@@ -2,7 +2,6 @@
 {
     class RoomController : MonoBehaviourSingleton<RoomController>
     {
-        //private float roomListRefreshTimer = 0f;
         //Debug
         /*private string debugInfo = "";
         private GUIStyle debugInfolStyle = new GUIStyle();

@@ -7,6 +7,9 @@ namespace MultiplayerPlusPlusMod.Patches._MultiplayerRoomList
     {
         private static bool Prefix(IndexPath index)
         {
+            if (MultiplayerManager.Instance.InRoom)
+                MultiplayerManager.Instance.LeaveRoom();
+
             MultiplayerManager.Instance.JoinSpecificRoom(MultiplayerManager.Instance.roomList[index[0]].Name);
             return false;
         }

@@ -69,9 +69,11 @@
   <ItemGroup>
     <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Patches\_MultiplayerMainMenu\JoinNextMap.cs" />
     <Compile Include="Patches\_MultiplayerRoomList\Refresh.cs" />
     <Compile Include="Patches\_MultiplayerRoomList\ListView_OnItemSelectedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
