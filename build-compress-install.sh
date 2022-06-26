@@ -5,7 +5,7 @@ modVersion=0
 modName="multiplayer-plus-plus"
 projectName="MultiplayerPlusPlusMod"
 installationPath="../../../SteamLibrary/steamapps/common/Skater XL/Mods/"
-buildMode="Debug"
+buildMode="Release"
 
 msbuild.exe -v:q ./$projectName/$projectName.sln /property:Configuration=$buildMode
 if [[ $? = 0 ]]

@@ -8,6 +8,7 @@ namespace MultiplayerPlusPlusMod.Patches._MultiplayerMainMenu
         private static bool Prefix()
         {
             MultiplayerManager.Instance.menuController.ViewRoomList();
+            Controllers.RoomController.Instance.RefreshRoomListWhileInRoom();
             return false;
         }
     }

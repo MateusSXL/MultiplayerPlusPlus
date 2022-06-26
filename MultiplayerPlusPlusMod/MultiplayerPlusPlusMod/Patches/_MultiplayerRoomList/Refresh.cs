@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Photon.Pun;
 
 namespace MultiplayerPlusPlusMod.Patches._MultiplayerRoomList
 {
@@ -7,8 +8,8 @@ namespace MultiplayerPlusPlusMod.Patches._MultiplayerRoomList
     {
         private static bool Prefix(MultiplayerRoomList __instance)
         {
-            MultiplayerManager.Instance.UpdateRoomList(false);
-            __instance.UpdateList();
+            if (PhotonNetwork.InRoom) Controllers.RoomController.Instance.RefreshRoomListWhileInRoom();
+            else __instance.UpdateList();
             return false;
         }
     }
