@@ -1,13 +1,16 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
-//using UnityEngine;
+using UnityEngine;
+using System;
+using TMPro;
 
 namespace MultiplayerPlusPlusMod.Controllers
 {
     class RoomController : MonoBehaviourSingleton<RoomController>, IConnectionCallbacks, ILobbyCallbacks
     {
         private LoadBalancingClient client;
+        public TMP_Text refreshListBtn;
         //Debug
         /*private string debugInfo = "";
         private GUIStyle debugInfolStyle = new GUIStyle();
@@ -18,6 +21,8 @@ namespace MultiplayerPlusPlusMod.Controllers
             client = new LoadBalancingClient();
             client.AddCallbackTarget(this);
             ShowPublicRoomsHiddenButtons();
+            refreshListBtn = Array.Find(MultiplayerManager.Instance.menuController.roomList.GetComponentsInChildren<TMP_Text>(), button => button.text == "Refresh List");
+
             //debugInfolStyle.normal.textColor = Color.green;
         }
 
@@ -43,27 +48,13 @@ namespace MultiplayerPlusPlusMod.Controllers
                     + " | AppVersion : " + PhotonNetwork.NetworkingClient.AppVersion
                     + " | CloudRegion : " + PhotonNetwork.NetworkingClient.CloudRegion
                     ;
-
-
             }
-
-            *//*string roomList = "";
-            foreach (RoomInfo room in MultiplayerManager.Instance.roomList)
-            {
-                roomList += "\n"
-                    + "        code: " + room.Name
-                    + " | map: " + room.CustomProperties[(object)MultiplayerManager.MAPNAME_PROP_KEY] as string
-                    + " | players: " + room.PlayerCount + "/" + room.MaxPlayers
-                    ;
-            }*//*
 
             if (PlayerController.Instance.currentStateEnum == PlayerController.CurrentState.Setup)
                 extraInfo = "";
 
             debugInfo = "Player State : " + PlayerController.Instance.currentStateEnum
                 + "\n photonInfo : " + photonInfo
-                + "\n rooms count : " + MultiplayerManager.Instance.roomList.Count
-                //+ "\n rooms : " + roomList
                 + "\n extraInfo : " + extraInfo
                 ;
         }*/
@@ -72,8 +63,14 @@ namespace MultiplayerPlusPlusMod.Controllers
         {
             foreach (MultiplayerMainMenu.ButtonVisibilityDef buttonVisibilityDef in MultiplayerManager.Instance.menuController.mainMenu.options)
             {
-                if(buttonVisibilityDef.name == "Browse Rooms Button" || buttonVisibilityDef.name == "Create Room Button")
+                if (buttonVisibilityDef.name == "Browse Rooms Button" || buttonVisibilityDef.name == "Create Room Button")
                     buttonVisibilityDef.showOnlyWithDebugCheats = false;
+
+                else if(buttonVisibilityDef.name == "Join Next Map Button")
+                {
+                    TMP_Text JoinNextMapText = buttonVisibilityDef.buttonGO.GetComponentInChildren<TMP_Text>();
+                    if (JoinNextMapText != null) JoinNextMapText.SetText("Browse Rooms");
+                }
             }
         }
 
@@ -81,16 +78,13 @@ namespace MultiplayerPlusPlusMod.Controllers
         {
             if (PhotonNetwork.InRoom && !client.IsConnected)
             {
+                refreshListBtn.SetText("Searching Rooms...");
                 client.AppId = PhotonNetwork.NetworkingClient.AppId;
                 client.AppVersion = PhotonNetwork.NetworkingClient.AppVersion;
                 client.MasterServerAddress = PhotonNetwork.NetworkingClient.MasterServerAddress;
                 client.ConnectToRegionMaster(PhotonNetwork.NetworkingClient.CloudRegion);
             }
 
-        }
-
-        public void OnConnected()
-        {
         }
 
         public void OnConnectedToMaster()
@@ -114,6 +108,11 @@ namespace MultiplayerPlusPlusMod.Controllers
         }
 
         public void OnDisconnected(DisconnectCause cause)
+        {
+            refreshListBtn.SetText("Refresh List");
+        }
+
+        public void OnConnected()
         {
         }
 

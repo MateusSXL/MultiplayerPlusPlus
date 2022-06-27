@@ -8,7 +8,8 @@ namespace MultiplayerPlusPlusMod.Patches._MultiplayerMainMenu
         private static bool Prefix()
         {
             MultiplayerManager.Instance.menuController.ViewRoomList();
-            Controllers.RoomController.Instance.RefreshRoomListWhileInRoom();
+            if (Photon.Pun.PhotonNetwork.InRoom)
+                Controllers.RoomController.Instance.RefreshRoomListWhileInRoom();
             return false;
         }
     }
