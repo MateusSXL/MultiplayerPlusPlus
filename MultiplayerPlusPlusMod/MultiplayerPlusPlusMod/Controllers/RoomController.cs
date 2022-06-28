@@ -1,7 +1,6 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
-using UnityEngine;
 using System;
 using TMPro;
 
@@ -10,7 +9,7 @@ namespace MultiplayerPlusPlusMod.Controllers
     class RoomController : MonoBehaviourSingleton<RoomController>, IConnectionCallbacks, ILobbyCallbacks
     {
         private LoadBalancingClient client;
-        public TMP_Text refreshListBtn;
+        public TMP_Text refreshListButton;
         //Debug
         /*private string debugInfo = "";
         private GUIStyle debugInfolStyle = new GUIStyle();
@@ -21,7 +20,7 @@ namespace MultiplayerPlusPlusMod.Controllers
             client = new LoadBalancingClient();
             client.AddCallbackTarget(this);
             ShowPublicRoomsHiddenButtons();
-            refreshListBtn = Array.Find(MultiplayerManager.Instance.menuController.roomList.GetComponentsInChildren<TMP_Text>(), button => button.text == "Refresh List");
+            refreshListButton = Array.Find(MultiplayerManager.Instance.menuController.roomList.GetComponentsInChildren<TMP_Text>(), button => button.text == "Refresh List");
 
             //debugInfolStyle.normal.textColor = Color.green;
         }
@@ -33,7 +32,7 @@ namespace MultiplayerPlusPlusMod.Controllers
 
         private void Update()
         {
-            if(client.IsConnected) client.Service();
+            if (client.IsConnected) client.Service();
             //UpdateDebugInfo();
         }
 
@@ -74,11 +73,17 @@ namespace MultiplayerPlusPlusMod.Controllers
             }
         }
 
+        public void UpdateRefreshListButton(bool isSearchingRooms)
+        {
+            if (refreshListButton != null)
+                refreshListButton.SetText(isSearchingRooms ? "Searching Rooms..." : "Refresh List");
+        }
+
         public void RefreshRoomListWhileInRoom()
         {
             if (PhotonNetwork.InRoom && !client.IsConnected)
             {
-                refreshListBtn.SetText("Searching Rooms...");
+                UpdateRefreshListButton(true);
                 client.AppId = PhotonNetwork.NetworkingClient.AppId;
                 client.AppVersion = PhotonNetwork.NetworkingClient.AppVersion;
                 client.MasterServerAddress = PhotonNetwork.NetworkingClient.MasterServerAddress;
@@ -101,15 +106,19 @@ namespace MultiplayerPlusPlusMod.Controllers
         {
             if (PhotonNetwork.InRoom)
                 roomList.Remove(roomList.Find(room => room.Name == PhotonNetwork.CurrentRoom.Name));
+            
+            roomList.Sort(delegate(RoomInfo room1, RoomInfo room2) {
+                return room2.PlayerCount.CompareTo(room1.PlayerCount);
+            });
 
             MultiplayerManager.Instance.roomList = roomList;
             MultiplayerManager.Instance.menuController.roomList.UpdateList();
-            client.Disconnect(DisconnectCause.None);
+            client.Disconnect();
         }
 
         public void OnDisconnected(DisconnectCause cause)
         {
-            refreshListBtn.SetText("Refresh List");
+            UpdateRefreshListButton(false);
         }
 
         public void OnConnected()

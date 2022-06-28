@@ -10,6 +10,7 @@ namespace MultiplayerPlusPlusMod.Patches._MultiplayerMainMenu
             MultiplayerManager.Instance.menuController.ViewRoomList();
             if (Photon.Pun.PhotonNetwork.InRoom)
                 Controllers.RoomController.Instance.RefreshRoomListWhileInRoom();
+
             return false;
         }
     }

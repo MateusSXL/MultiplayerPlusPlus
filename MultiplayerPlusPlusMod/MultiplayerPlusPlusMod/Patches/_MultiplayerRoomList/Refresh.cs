@@ -10,6 +10,7 @@ namespace MultiplayerPlusPlusMod.Patches._MultiplayerRoomList
         {
             if (PhotonNetwork.InRoom) Controllers.RoomController.Instance.RefreshRoomListWhileInRoom();
             else __instance.UpdateList();
+
             return false;
         }
     }
