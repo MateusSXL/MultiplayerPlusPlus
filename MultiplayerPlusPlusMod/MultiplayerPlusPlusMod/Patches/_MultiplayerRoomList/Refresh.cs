@@ -8,8 +8,13 @@ namespace MultiplayerPlusPlusMod.Patches._MultiplayerRoomList
     {
         private static bool Prefix(MultiplayerRoomList __instance)
         {
-            if (PhotonNetwork.InRoom) Controllers.RoomController.Instance.RefreshRoomListWhileInRoom();
-            else __instance.UpdateList();
+            if (PhotonNetwork.InRoom) 
+                Controllers.RoomController.Instance.RefreshRoomListWhileInRoom();
+            else
+            {
+                MultiplayerManager.Instance.UpdateRoomList(false);
+                __instance.UpdateList();
+            }
 
             return false;
         }
