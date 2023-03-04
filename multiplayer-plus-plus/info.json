@@ -1,7 +1,7 @@
 {
     "Id": "MultiplayerPlusPlusMod",
     "DisplayName": "Multiplayer++",
-    "Version": "1.0.1",
+    "Version": "1.0.2",
     "AssemblyName": "MultiplayerPlusPlusMod.dll",
     "EntryMethod": "MultiplayerPlusPlusMod.Main.Load"
   }
